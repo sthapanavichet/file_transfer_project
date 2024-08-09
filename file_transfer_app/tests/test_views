@@ -1,0 +1,40 @@
+
+# file_transfer_app/tests/test_views.py
+import pytest
+from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
+from django.shortcuts import reverse
+from django.test import Client
+from file_transfer_app.models import FileTransfer
+
+@pytest.fixture
+def client():
+    return Client()
+
+@pytest.fixture
+def user(db):
+    return User.objects.create_user(username='testuser', password='testpassword')
+
+@pytest.fixture
+def authenticated_client(client, user):
+    client.login(username='testuser', password='testpassword')
+    return client
+
+@pytest.fixture
+def test_file(db, user):
+    return FileTransfer.objects.create(
+        title='Test File',
+        uploader=user,
+        file='test.txt'  # This should be a valid file path for testing
+    )
+
+def test_home_view(client):
+    response = client.get(reverse('home'))
+    assert response.status_code == 200
+    assert 'file_transfer_app/home.html' in [template.name for template in response.templates]
+
+def test_user_login_view_authenticated(authenticated_client):
+    response = authenticated_client.get(reverse('user_login'))
+    assert response.status_code == 302  # Redirects to home for authenticated user
+
+# Add more tests for other views as needed

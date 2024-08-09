@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Files</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('{% static "downloadimage.jpg" %}') no-repeat center center fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-size: cover;
+        }
+
+        h1 {
+            color: #333;
+        }
+        #top-right-button a{
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            color: white;
+            background-color: transparent;
+            border: 2px solid white;
+            padding: 5px;
+
+        }
+
+        #top-right-button a:hover{
+            background-color: white;
+            color: black;
+        }
+
+        .file-container {
+            width: 40%;
+            background-color: rgba(255, 255, 255, 0.895);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Box shadow added */
+
+        }
+
+
+        .file-link {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .file-link:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div id="top-right-button">
+        <a href="{% url 'home' %}">Home</a>
+    </div>
+    <h1>Available Files</h1>
+
+    {% for file in files %}
+        <div class="file-container">
+            <a class="file-link" href="{% url 'download_file' file.id %}">{{ file.title }}</a>
+        </div>
+    {% endfor %}
+
+</body>
+</html>

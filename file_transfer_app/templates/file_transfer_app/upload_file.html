@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('{% static "downloadimage.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff; /* Set text color to white for better visibility on a background image */
+        }
+
+        h1 {
+            color: #fffdfd;
+        }
+        #top-right-button a{
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            color: white;
+            background-color: transparent;
+            border: 2px solid white;
+            padding: 5px;
+
+        }
+
+        #top-right-button a:hover{
+            background-color: white;
+            color: black;
+        }
+        form {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(66, 66, 66, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: rgb(237, 243, 244);
+            font-size: 40px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .file-container {
+            background-color:rgb(136, 136, 136); /* Semi-transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-top: 10px;
+            width: 40%;
+            
+        }
+
+        .file-item {
+            margin: 10px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #186396;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+        #remove-button{
+            margin-left: 80%;
+            background-color: #3498db;
+            padding: 5px;
+            color: white;
+        }
+        .space{
+            height: 5%;
+            width: 100%;
+            background-color: rgb(136, 136, 136);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="top-right-button">
+        <a href="{% url 'home' %}">Home</a>
+    </div>
+    <h1>Upload a File</h1>
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong>Message:</strong> {{ message }}
+            </div>
+        {% endfor %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+
+    <h2>Uploaded Files:</h2>
+    <div class="file-container">
+        <ul>
+            {% for file in files %}
+                <li class="file-item"><a href="{% url 'download_file' file.id %}">{{ file.title }}</a>
+                    <a id="remove-button" href="{% url 'remove' file.id %}">Remove</a>
+                    <form method="post" action="{% url 'share' file.id %}">
+                        {% csrf_token %}
+                        
+                        <input type="text" name="username" id="username" required>
+
+                        <button type="submit" >Share</button>
+                    </form>
+                    <div class="space">
+                    <br>
+                    </div>
+                
+                </li>
+            {% endfor %}
+        </ul>
+        
+    </div>
+
+</body>
+</html>

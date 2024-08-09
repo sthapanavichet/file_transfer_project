@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('{% static "downloadimage.jpg" %}') no-repeat center center fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-size: cover;
+        }
+
+        h3 {
+            padding-top: 50px;
+            color: #f7f6f6;
+            font-size: 50px;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .home {
+            
+            width: 50%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            margin-top: 40px;
+            background-color: transparent;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            border: 2px solid white;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+      
+
+        a {
+
+            text-decoration: none;
+            color: #fff;
+            width: 50%;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin-top: 35px;
+            background-color: transparent;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            border: 2px solid white;
+            cursor: pointer;
+            font-size: 30px;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+            text-align: center;
+        }
+        a:hover {
+            background-color: rgb(245, 245, 243);
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong>Message:</strong> {{ message }}
+        </div>
+    {% endfor %}
+    <h3 id="headerText">Welcome to NAC File Sharing Project</h3>
+    {% if not user.is_authenticated %}
+    
+        <a href="login/">LOGIN</a>
+        <a href="signup/">SIGN UP</a>
+   
+    
+        
+    {% else %}
+        <a href="logout/">Logout</a>
+        <a href="download/">Download</a>
+        <a href="upload/">Upload</a>
+    {% endif %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const headerTexts = [
+                "Welcome to A File Sharing Platform",
+                "Made by Chet, Nahaeli, and Atem",
+                "Explore and Share Files Securely",
+                "Join our Community of Users",
+            ];
+
+            let index = 0;
+
+            function rotateHeaderText() {
+                const headerElement = document.getElementById('headerText');
+                if (headerElement) {
+                    headerElement.innerText = headerTexts[index];
+                    index = (index + 1) % headerTexts.length;
+                }
+            }
+
+            setInterval(rotateHeaderText, 3000);
+        });
+    </script>
+</body>
+
+</html>
