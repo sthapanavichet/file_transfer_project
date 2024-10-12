@@ -37,4 +37,22 @@ def test_user_login_view_authenticated(authenticated_client):
     response = authenticated_client.get(reverse('user_login'))
     assert response.status_code == 302  # Redirects to home for authenticated user
 
-# Add more tests for other views as needed
+def test_user_login_view_unauthenticated(client):
+    response = client.get(reverse('user_login'))
+    assert response.status_code == 200  # Should display the login page
+
+def test_file_upload_view_authenticated(authenticated_client):
+    response = authenticated_client.get(reverse('file_upload'))
+    assert response.status_code == 200  # Should display the file upload page
+
+def test_file_upload_view_unauthenticated(client):
+    response = client.get(reverse('file_upload'))
+    assert response.status_code == 302  # Should redirect to login page
+
+def test_file_download_view_authenticated(authenticated_client, test_file):
+    response = authenticated_client.get(reverse('file_download', args=[test_file.id]))
+    assert response.status_code == 200  # Should allow file download
+
+def test_file_download_view_unauthenticated(client, test_file):
+    response = client.get(reverse('file_download', args=[test_file.id]))
+    assert response.status_code == 302  # Should redirect to login page
